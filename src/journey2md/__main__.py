@@ -10,6 +10,10 @@ from pathlib import Path
 from typing import Any
 
 ##############################################################################
+# Markdownify imports.
+from markdownify import markdownify
+
+##############################################################################
 # Timezime help.
 from pytz import timezone
 
@@ -74,6 +78,68 @@ class Journey:
         """The path to the Markdown file that should be made for this journal."""
         return Path(self.journal_time.strftime("%Y/%m/%d/%Y-%m-%d-%H-%M-%S-%f-%Z.md"))
 
+    @property
+    def _front_matter_tags(self) -> str:
+        """The tags formatted for use in Markdown front matter."""
+        return f"tags:\n  - {'\n  - '.join(self.tags)}" if self.tags else ""
+
+    @property
+    def _front_matter_icbm(self) -> str:
+        """The ICBM location of the journal entry as Markdown front matter."""
+        # Note the not-quite-right sanity checking here. If you are likely
+        # to have been exactly in the bounding locations, adjust to taste. I
+        # never have been.
+        if 0 < self.lat <= 90 and -180 < self.lon <= 180:
+            return f"latitude: {self.lat}\nlongitude: {self.lon}"
+        return ""
+
+    @property
+    def _front_matter_weather(self) -> str:
+        """The weather data for the journal entry as Markdown front matter."""
+        # Assume that it's only worth including the weather if it has the
+        # main values filled in.
+        if self.weather and self.weather["place"] and self.weather["icon"] and self.weather["description"]:
+            # Note that I've only ever used Journey as a user who works in
+            # C, not F. I've no idea if the exported data always converts
+            # the temperature to C or not. Adjust to taste.
+            return (
+                f"weather-degree-c: {self.weather['degree_c']}\n"
+                f"weather-place: {self.weather['place']}\n"
+                f"weather-description: {self.weather['description']}"
+            )
+        return ""
+
+    @property
+    def markdown(self) -> str:
+        """The journey journal entry as a markdown document."""
+
+        # Start with the front matter.
+        front_matter = "\n".join(matter for matter in (
+            f"timezone: {self.timezone}" if self.timezone else "",
+            f"mood: {self.mood}",
+            self._front_matter_icbm,
+            f"label: {self.label}" if self.label else "",
+            f"folder: {self.folder}" if self.folder else "",
+            f"sentiment: {self.sentiment}",
+            f"music-title: {self.music_title}" if self.music_title else "",
+            f"music-artist: {self.music_artist}" if self.music_artist else "",
+            self._front_matter_weather,
+            self._front_matter_tags,
+            f"original-type: {self.type if self.type else 'plain-text'}",
+        ) if matter)
+        markdown = f"---\n{front_matter}\n---\n\n"
+
+        # Add the title.
+        markdown += f"# {self.journal_time.strftime('%A %B %-m %Y %X')}\n\n"
+
+        # Add the body, depending on type.
+        if self.type == "html":
+            markdown += markdownify(self.text)
+        else:
+            markdown += self.text
+
+        return markdown
+
 ##############################################################################
 def get_args() -> Namespace:
     """Get the command line arguments.
@@ -100,9 +166,14 @@ def export(journey: Path, daily: Path) -> None:
         daily: The target daily location.
     """
     for source in journey.glob("*.json"):
+        # Get the entry from the Journey export.
         entry = Journey(**loads(source.read_text()))
+        # Figure out the path to the output file.
         markdown = daily / entry.markdown_file
-        print(markdown)
+        # Ensure its directory exists so we can actually write the file.
+        markdown.parent.mkdir(parents=True, exist_ok=True)
+        markdown.write_text(entry.markdown)
+        print(f"Exported {entry.journal_time}")
 
 ##############################################################################
 def main() -> None:
