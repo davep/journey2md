@@ -7,6 +7,7 @@ authors = [
 ]
 dependencies = [
     "pytz>=2024.2",
+    "markdownify>=0.13.1",
 ]
 readme = "README.md"
 requires-python = ">= 3.8"
