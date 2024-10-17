@@ -1,7 +1,7 @@
 [project]
 name = "journey2md"
 version = "0.1.0"
-description = "A command line tool to make a Markdown vauly from a Journeyt export"
+description = "A command line tool to make a Markdown vault from a Journey export"
 authors = [
     { name = "Dave Pearson", email = "davep@davep.org" }
 ]
