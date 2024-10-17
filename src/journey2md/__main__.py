@@ -11,7 +11,7 @@ from typing import Any
 
 ##############################################################################
 # Markdownify imports.
-from markdownify import markdownify
+from markdownify import markdownify # type: ignore
 
 ##############################################################################
 # Timezime help.
