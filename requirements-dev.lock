@@ -12,13 +12,28 @@
 -e file:.
 beautifulsoup4==4.12.3
     # via markdownify
+cfgv==3.4.0
+    # via pre-commit
+distlib==0.3.9
+    # via virtualenv
+filelock==3.16.1
+    # via virtualenv
+identify==2.6.1
+    # via pre-commit
 markdownify==0.13.1
     # via journey2md
 mypy==1.12.0
 mypy-extensions==1.0.0
     # via mypy
+nodeenv==1.9.1
+    # via pre-commit
+platformdirs==4.3.6
+    # via virtualenv
+pre-commit==4.0.1
 pytz==2024.2
     # via journey2md
+pyyaml==6.0.2
+    # via pre-commit
 six==1.16.0
     # via markdownify
 soupsieve==2.6
@@ -26,3 +41,5 @@ soupsieve==2.6
 types-pytz==2024.2.0.20241003
 typing-extensions==4.12.2
     # via mypy
+virtualenv==20.26.6
+    # via pre-commit

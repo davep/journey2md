@@ -1,11 +1,12 @@
 ###############################################################################
 # Common make values.
-app      := journey2md
-src      := src/$(app)
-run      := rye run
-python   := $(run) python
-lint     := rye lint
-mypy     := $(run) mypy
+app    := journey2md
+src    := src/$(app)
+run    := rye run
+python := $(run) python
+lint   := rye lint
+fmt    := rye fmt
+mypy   := $(run) mypy
 
 ##############################################################################
 # Run the app.
@@ -18,6 +19,7 @@ run:
 .PHONY: setup
 setup:				# Install all dependencies
 	rye sync
+	$(run) pre-commit install
 
 ##############################################################################
 # Checking/testing/linting/etc.
@@ -58,7 +60,7 @@ dist: package			# Upload to pypi
 # Utility.
 .PHONY: ugly
 ugly:				# Reformat the code with black.
-	rye fmt $(src)
+	$(fmt) $(src)
 
 .PHONY: repl
 repl:				# Start a Python REPL
