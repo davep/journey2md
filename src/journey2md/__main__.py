@@ -139,6 +139,8 @@ class Journey:
         front_matter = "\n".join(
             matter
             for matter in (
+                f"journal-time: {self.journal_time}",
+                f"modified-time: {self.modified_time}",
                 f"timezone: {self.timezone}" if self.timezone else "",
                 f"mood: {self.mood}",
                 self._front_matter_icbm,
