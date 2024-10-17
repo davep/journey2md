@@ -144,6 +144,7 @@ class Journey:
                 f"timezone: {self.timezone}" if self.timezone else "",
                 f"mood: {self.mood}",
                 self._front_matter_icbm,
+                f"address: {self.address}" if self.address else "",
                 f"label: {self.label}" if self.label else "",
                 f"folder: {self.folder}" if self.folder else "",
                 f"photo-count: {len(self.photos)}",
