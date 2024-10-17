@@ -14,9 +14,15 @@ beautifulsoup4==4.12.3
     # via markdownify
 markdownify==0.13.1
     # via journey2md
+mypy==1.12.0
+mypy-extensions==1.0.0
+    # via mypy
 pytz==2024.2
     # via journey2md
 six==1.16.0
     # via markdownify
 soupsieve==2.6
     # via beautifulsoup4
+types-pytz==2024.2.0.20241003
+typing-extensions==4.12.2
+    # via mypy
