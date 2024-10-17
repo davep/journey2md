@@ -33,9 +33,11 @@ $ brew install journey2md
 
 ### Getting ready to use
 
-The first thing you will need to do is create a full ZIP backup of your
-Journey data, once you've done that unzip the backup file into a directory,
-so that all the JSON data and photo attachments are individually available.
+The first thing you will need to do is [create a full ZIP export of your
+Journey
+data](https://help.journey.cloud/en/article/archive-journal-entries-to-zip-format-v6dsvi/),
+once you've done that unzip the export file into a directory, so that all
+the JSON data and photo attachments are individually available.
 
 ### Assumptions for the "Vault"
 
@@ -66,8 +68,8 @@ journey2md journey-data markdown-vault
 ```
 
 where `journey-data` is the path to the directory that holds all of the
-extracted Journey backup files, and where `markdown-vault` is the directory
-you created that will be the Vault.
+extracted Journey files, and where `markdown-vault` is the directory you
+created that will be the Vault.
 
 ## Getting help
 
