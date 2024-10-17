@@ -9,9 +9,6 @@ built so it can easily be used as an [Obsidian](https://obsidian.md) Vault.
 
 ## Installing
 
-> [!NOTE]
-> Ignore this section for the moment, this is a placeholder.
-
 ### pipx
 
 The package can be installed using [`pipx`](https://pypa.github.io/pipx/):
