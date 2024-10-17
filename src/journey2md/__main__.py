@@ -17,6 +17,7 @@ from markdownify import markdownify
 # Timezime help.
 from pytz import timezone
 
+
 ##############################################################################
 @dataclass
 class Journey:
@@ -66,12 +67,16 @@ class Journey:
     @property
     def journal_time(self) -> datetime:
         """The time of the journal entry."""
-        return datetime.fromtimestamp(self.date_journal/1000, timezone(self.timezone or "UTC"))
+        return datetime.fromtimestamp(
+            self.date_journal / 1000, timezone(self.timezone or "UTC")
+        )
 
     @property
     def modified_time(self) -> datetime:
         """The time of the journal entry was last modified."""
-        return datetime.fromtimestamp(self.date_modified/1000, timezone(self.timezone or "UTC"))
+        return datetime.fromtimestamp(
+            self.date_modified / 1000, timezone(self.timezone or "UTC")
+        )
 
     @property
     def markdown_file(self) -> Path:
@@ -98,7 +103,12 @@ class Journey:
         """The weather data for the journal entry as Markdown front matter."""
         # Assume that it's only worth including the weather if it has the
         # main values filled in.
-        if self.weather and self.weather["place"] and self.weather["icon"] and self.weather["description"]:
+        if (
+            self.weather
+            and self.weather["place"]
+            and self.weather["icon"]
+            and self.weather["description"]
+        ):
             # Note that I've only ever used Journey as a user who works in
             # C, not F. I've no idea if the exported data always converts
             # the temperature to C or not. Adjust to taste.
@@ -114,19 +124,23 @@ class Journey:
         """The journey journal entry as a markdown document."""
 
         # Start with the front matter.
-        front_matter = "\n".join(matter for matter in (
-            f"timezone: {self.timezone}" if self.timezone else "",
-            f"mood: {self.mood}",
-            self._front_matter_icbm,
-            f"label: {self.label}" if self.label else "",
-            f"folder: {self.folder}" if self.folder else "",
-            f"sentiment: {self.sentiment}",
-            f"music-title: {self.music_title}" if self.music_title else "",
-            f"music-artist: {self.music_artist}" if self.music_artist else "",
-            self._front_matter_weather,
-            self._front_matter_tags,
-            f"original-type: {self.type if self.type else 'plain-text'}",
-        ) if matter)
+        front_matter = "\n".join(
+            matter
+            for matter in (
+                f"timezone: {self.timezone}" if self.timezone else "",
+                f"mood: {self.mood}",
+                self._front_matter_icbm,
+                f"label: {self.label}" if self.label else "",
+                f"folder: {self.folder}" if self.folder else "",
+                f"sentiment: {self.sentiment}",
+                f"music-title: {self.music_title}" if self.music_title else "",
+                f"music-artist: {self.music_artist}" if self.music_artist else "",
+                self._front_matter_weather,
+                self._front_matter_tags,
+                f"original-type: {self.type if self.type else 'plain-text'}",
+            )
+            if matter
+        )
         markdown = f"---\n{front_matter}\n---\n\n"
 
         # Add the title.
@@ -140,6 +154,7 @@ class Journey:
 
         return markdown
 
+
 ##############################################################################
 def get_args() -> Namespace:
     """Get the command line arguments.
@@ -152,10 +167,16 @@ def get_args() -> Namespace:
         description="A tool for converting a Journey export file into a daily-note Markdown collection",
     )
 
-    parser.add_argument("journey_files", help="The directory that contains the unzipped Journey export")
-    parser.add_argument("target_directory", help="The directory where the Markdown files will be created")
+    parser.add_argument(
+        "journey_files", help="The directory that contains the unzipped Journey export"
+    )
+    parser.add_argument(
+        "target_directory",
+        help="The directory where the Markdown files will be created",
+    )
 
     return parser.parse_args()
+
 
 ##############################################################################
 def export(journey: Path, daily: Path) -> None:
@@ -175,6 +196,7 @@ def export(journey: Path, daily: Path) -> None:
         markdown.write_text(entry.markdown)
         print(f"Exported {entry.journal_time}")
 
+
 ##############################################################################
 def main() -> None:
     """Main entry point for the utility."""
@@ -186,6 +208,7 @@ def main() -> None:
         print("The target needs to be an existing directory")
         exit(1)
     export(journey, daily)
+
 
 ##############################################################################
 if __name__ == "__main__":
