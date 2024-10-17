@@ -160,7 +160,7 @@ class Journey:
         markdown = f"---\n{front_matter}\n---\n\n"
 
         # Add the title.
-        markdown += f"# {self.journal_time.strftime('%A %B %-d %Y %X')}\n\n"
+        markdown += f"# {self.journal_time.strftime('%A, %-d %B %Y at %X')}\n\n"
 
         # Add the body, depending on type.
         if self.type == "html":
