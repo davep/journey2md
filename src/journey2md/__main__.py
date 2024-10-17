@@ -146,6 +146,7 @@ class Journey:
                 self._front_matter_icbm,
                 f"label: {self.label}" if self.label else "",
                 f"folder: {self.folder}" if self.folder else "",
+                f"photo-count: {len(self.photos)}",
                 f"sentiment: {self.sentiment}",
                 f"music-title: {self.music_title}" if self.music_title else "",
                 f"music-artist: {self.music_artist}" if self.music_artist else "",
