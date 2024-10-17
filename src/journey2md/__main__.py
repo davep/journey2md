@@ -11,7 +11,7 @@ from typing import Any
 
 ##############################################################################
 # Markdownify imports.
-from markdownify import markdownify # type: ignore
+from markdownify import markdownify  # type: ignore
 
 ##############################################################################
 # Timezime help.
@@ -79,9 +79,21 @@ class Journey:
         )
 
     @property
+    def markdown_directory(self) -> Path:
+        """The directory that this entry should be created in."""
+        return Path(self.journal_time.strftime("%Y/%m/%d/"))
+
+    @property
+    def markdown_attachment_directory(self) -> Path:
+        """The location of the attachment directory associated with this journal entry."""
+        return self.markdown_directory / "attachments"
+
+    @property
     def markdown_file(self) -> Path:
         """The path to the Markdown file that should be made for this journal."""
-        return Path(self.journal_time.strftime("%Y/%m/%d/%Y-%m-%d-%H-%M-%S-%f-%Z.md"))
+        return self.markdown_directory / Path(
+            self.journal_time.strftime("%Y-%m-%d-%H-%M-%S-%f-%Z.md")
+        )
 
     @property
     def _front_matter_tags(self) -> str:
@@ -152,6 +164,12 @@ class Journey:
         else:
             markdown += self.text
 
+        # If there are photos...
+        if self.photos:
+            markdown += "\n---\n" + "\n---\n".join(
+                f"\n![[{photo}]]\n" for photo in self.photos
+            )
+
         return markdown
 
 
@@ -195,6 +213,15 @@ def export(journey: Path, daily: Path) -> None:
         markdown.parent.mkdir(parents=True, exist_ok=True)
         markdown.write_text(entry.markdown)
         print(f"Exported {entry.journal_time}")
+        # If the entry has photos too...
+        if entry.photos:
+            # ...copy them to the attachment directory.
+            (attachments := (daily / entry.markdown_attachment_directory)).mkdir(
+                parents=True, exist_ok=True
+            )
+            for photo in entry.photos:
+                print(f"\tAttaching {photo}")
+                (attachments / photo).write_bytes((journey / photo).read_bytes())
 
 
 ##############################################################################
