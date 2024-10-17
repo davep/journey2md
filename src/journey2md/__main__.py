@@ -170,7 +170,7 @@ class Journey:
 
         # If there are photos...
         if self.photos:
-            markdown += "\n---\n" + "\n---\n".join(
+            markdown += "\n## Photos\n" + "\n---\n".join(
                 f"\n![[{photo}]]\n" for photo in self.photos
             )
 
