@@ -1,16 +1,23 @@
 [project]
 name = "journey2md"
 version = "0.1.0"
-description = "Add your description here"
+description = "A command line tool to make a Markdown vauly from a Journeyt export"
 authors = [
     { name = "Dave Pearson", email = "davep@davep.org" }
 ]
+license = { file = "LICENSE" }
 dependencies = [
     "pytz>=2024.2",
     "markdownify>=0.13.1",
 ]
 readme = "README.md"
-requires-python = ">= 3.8"
+requires-python = ">= 3.12"
+
+[project.urls]
+Homepage = "https://github.com/davep/journey2md"
+Repository = "https://github.com/davep/journey2md"
+Documentation = "https://github.com/davep/journey2md"
+Issues = "https://github.com/davep/journey2md/issues"
 
 [project.scripts]
 journey2md = "journey2md.__main__:main"
